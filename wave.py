@@ -63,8 +63,10 @@ class Wave(QGraphicsItem):
             ),
             #pi/4
             (
-                QPointF(m_radius*math.cos(math.pi/4)-ticksize,-m_radius*math.sin(math.pi/4)+ticksize),
-                QPointF(m_radius*math.cos(math.pi/4)+ticksize,-m_radius*math.sin(math.pi/4)-ticksize)
+                QPointF(m_radius*math.cos(math.pi/4)-ticksize,
+                        -m_radius*math.sin(math.pi/4)+ticksize),
+                QPointF(m_radius*math.cos(math.pi/4)+ticksize,
+                        -m_radius*math.sin(math.pi/4)-ticksize)
 
             ),
             (
@@ -73,8 +75,10 @@ class Wave(QGraphicsItem):
             ),
             # 3pi/4
             (
-                QPointF(m_radius*math.cos(3*math.pi/4)-ticksize,-m_radius*math.sin(math.pi/4)-ticksize),
-                QPointF(m_radius*math.cos(3*math.pi/4)+ticksize,-m_radius*math.sin(math.pi/4)+ticksize)
+                QPointF(m_radius*math.cos(3*math.pi/4)-ticksize,
+                        -m_radius*math.sin(math.pi/4)-ticksize),
+                QPointF(m_radius*math.cos(3*math.pi/4)+ticksize,
+                       -m_radius*math.sin(math.pi/4)+ticksize)
             ),
             # 180
             (
@@ -88,13 +92,17 @@ class Wave(QGraphicsItem):
                 QPointF(0,m_radius+ticksize)
             ),
             (
-                QPointF(m_radius*math.cos(5*math.pi/4)-ticksize,-m_radius*math.sin(5*math.pi/4)+ticksize),
-                QPointF(m_radius*math.cos(5*math.pi/4)+ticksize,-m_radius*math.sin(5*math.pi/4)-ticksize)
+                QPointF(m_radius*math.cos(5*math.pi/4)-ticksize,
+                        -m_radius*math.sin(5*math.pi/4)+ticksize),
+                QPointF(m_radius*math.cos(5*math.pi/4)+ticksize,
+                       -m_radius*math.sin(5*math.pi/4)-ticksize)
             ),
             # 7pi/4
             (
-                QPointF(m_radius*math.cos(7*math.pi/4)-ticksize,-m_radius*math.sin(7*math.pi/4)-ticksize),
-                QPointF(m_radius*math.cos(7*math.pi/4)+ticksize,-m_radius*math.sin(7*math.pi/4)+ticksize)
+                QPointF(m_radius*math.cos(7*math.pi/4)-ticksize,
+                       -m_radius*math.sin(7*math.pi/4)-ticksize),
+                QPointF(m_radius*math.cos(7*math.pi/4)+ticksize,
+                       -m_radius*math.sin(7*math.pi/4)+ticksize)
             )
         ]
 
