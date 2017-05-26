@@ -49,9 +49,8 @@ class Wave(QGraphicsItem):
     def getRad(self):
         return self.currentTick * math.pi / 180.0 
 
-    def unitCircle(self,cp):
+    def unitCircle(self,m_radius,cp):
         ticksize = 3
-        m_radius = 10
         qp = QPainterPath()
         qp.addEllipse(cp,m_radius,m_radius)
         points = [
@@ -116,17 +115,17 @@ class Wave(QGraphicsItem):
         return qp
 
     def paint(self,painter,option,widget):
-        radius = 100
-        c_size = 5
+        radius = 30
+        c_size =5 
         rad = self.getRad()
         painter.setPen(self.color)
         painter.drawPath(self.curve)
 
         painter.setPen(Qt.red)
         cp = QPointF(self.xres*self.currentTick,-self.yres*self.fn(rad))
-        painter.drawPath(self.unitCircle(cp))
+        painter.drawPath(self.unitCircle(radius,cp))
         #drawCircle(painter,cp)
-        painter.drawLine(cp,cp+QPointF(40*math.cos(rad),-40*math.sin(rad)))
+        painter.drawLine(cp,cp+QPointF(radius*math.cos(rad),-radius*math.sin(rad)))
         painter.setBrush(Qt.blue)
-        painter.drawEllipse(cp+QPointF(40*math.cos(rad),-40*math.sin(rad)),c_size,c_size)
+        painter.drawEllipse(cp+QPointF(radius*math.cos(rad),-radius*math.sin(rad)),c_size,c_size)
     
