@@ -54,47 +54,49 @@ class Wave(QGraphicsItem):
         m_radius = 10
         qp = QPainterPath()
         qp.addEllipse(cp,m_radius,m_radius)
-        points = []
-        # 0
-        points.append((
+        points = [
+
+            # 0
+            (
                 QPointF(m_radius-ticksize,0),
                 QPointF(m_radius+ticksize,0)
-                          ))
-        #pi/4
-        points.append((
-                            QPointF(m_radius*math.cos(math.pi/4)-ticksize,-m_radius*math.sin(math.pi/4)+ticksize),
-                            QPointF(m_radius*math.cos(math.pi/4)+ticksize,-m_radius*math.sin(math.pi/4)-ticksize)
-                          ))
-        # pi/2
-        points.append( (
-                        QPointF(0,-m_radius-ticksize),
-                        QPointF(0,-m_radius+ticksize)
-                          ))
-        # 3pi/4
-        points.append((
+            ),
+            #pi/4
+            (
+                QPointF(m_radius*math.cos(math.pi/4)-ticksize,-m_radius*math.sin(math.pi/4)+ticksize),
+                QPointF(m_radius*math.cos(math.pi/4)+ticksize,-m_radius*math.sin(math.pi/4)-ticksize)
+
+            ),
+            (
+                QPointF(0,-m_radius-ticksize),
+                QPointF(0,-m_radius+ticksize)
+            ),
+            # 3pi/4
+            (
                 QPointF(m_radius*math.cos(3*math.pi/4)-ticksize,-m_radius*math.sin(math.pi/4)-ticksize),
                 QPointF(m_radius*math.cos(3*math.pi/4)+ticksize,-m_radius*math.sin(math.pi/4)+ticksize)
-                          ))
-        # 180
-        points.append((
+            ),
+            # 180
+            (
                 QPointF(-m_radius-ticksize,0),
                 QPointF(-m_radius+ticksize,0)
-                          ))
-        # 3pi/2
-        points.append((
-            QPointF(0,m_radius-ticksize),
-            QPointF(0,m_radius+ticksize)
-                          ))
-        # 3pi/2
-        points.append((
-            QPointF(m_radius*math.cos(5*math.pi/4)-ticksize,-m_radius*math.sin(5*math.pi/4)+ticksize),
-            QPointF(m_radius*math.cos(5*math.pi/4)+ticksize,-m_radius*math.sin(5*math.pi/4)-ticksize)
-                          ))
-        # 7pi/4
-        points.append((
+
+            ),
+            # 3pi/2
+            (
+                QPointF(0,m_radius-ticksize),
+                QPointF(0,m_radius+ticksize)
+            ),
+            (
+                QPointF(m_radius*math.cos(5*math.pi/4)-ticksize,-m_radius*math.sin(5*math.pi/4)+ticksize),
+                QPointF(m_radius*math.cos(5*math.pi/4)+ticksize,-m_radius*math.sin(5*math.pi/4)-ticksize)
+            ),
+            # 7pi/4
+            (
                 QPointF(m_radius*math.cos(7*math.pi/4)-ticksize,-m_radius*math.sin(7*math.pi/4)-ticksize),
                 QPointF(m_radius*math.cos(7*math.pi/4)+ticksize,-m_radius*math.sin(7*math.pi/4)+ticksize)
-                          ))
+            )
+        ]
 
        # build the tick marks
         for pair in points:
