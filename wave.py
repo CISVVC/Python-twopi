@@ -1,14 +1,22 @@
 #!/usr/bin/env python3
 import math
 
-from PyQt5.QtCore import (pyqtProperty, pyqtSignal, QEasingCurve, QObject,
-        QParallelAnimationGroup, QPointF, QPropertyAnimation, qrand, QRectF,
-        QState, QStateMachine, Qt, QTimer)
-from PyQt5.QtGui import (QBrush, QLinearGradient, QPainter, QPainterPath,
-        QPixmap)
-from PyQt5.QtWidgets import (QApplication, QGraphicsItem, QGraphicsPixmapItem,
-        QGraphicsRectItem, QGraphicsScene, QGraphicsView, QGraphicsWidget,
-        QStyle)
+from PyQt5.QtCore import (
+        QPointF, 
+        QRectF,
+        Qt, 
+        QTimer
+)
+from PyQt5.QtGui import (
+    QBrush, 
+    QPainter, 
+    QPainterPath,
+    QPixmap
+)
+from PyQt5.QtWidgets import (
+    QGraphicsItem, 
+    QGraphicsScene
+)
 
 class Wave(QGraphicsItem):
 

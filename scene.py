@@ -1,9 +1,8 @@
+#!/usr/bin/env python3
 from math import sin,cos
-from PyQt5.QtCore import (pyqtProperty, pyqtSignal, QEasingCurve, QObject,
-        QParallelAnimationGroup, QPointF, QPropertyAnimation, qrand, QRectF,
-        QState, QStateMachine, Qt)
+from PyQt5.QtCore import (
+        QPointF, Qt)
 from PyQt5.QtGui import (
-    QBrush, 
     QColor
     )
 from PyQt5.QtWidgets import (
