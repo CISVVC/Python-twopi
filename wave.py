@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import math
+from math import sin,cos,pi
 
 from PyQt5.QtCore import (
         QPointF, 
@@ -24,21 +24,22 @@ class Wave(QGraphicsItem):
 
     def __init__(self,fn,color):
         super(Wave,self).__init__()
-        self.fn = fn
+        self.fnText = fn
+        self.fn = eval(fn)
         self.color = color
         self.xres = 2 
         self.yres = 100
         self.currentTick = 0
         self.curve = self.getCurve()
-        self.setFlag(QGraphicsItem.ItemIsMovable, True);
-        self.setFlag(QGraphicsItem.ItemIsSelectable, True);
+        #self.setFlag(QGraphicsItem.ItemIsMovable, True);
+        #self.setFlag(QGraphicsItem.ItemIsSelectable, True);
 
     def getCurve(self):
        qp = QPainterPath()
        lastPoint = QPointF(0.0,0.0)
        for d in range(360):
            qp.moveTo(lastPoint)
-           nextPoint = QPointF(self.xres * d,-1*self.yres * self.fn(d*math.pi/180.0))
+           nextPoint = QPointF(self.xres * d,-1*self.yres * self.fn(d*pi/180.0))
            qp.lineTo(nextPoint)
            lastPoint = nextPoint
 
@@ -55,10 +56,9 @@ class Wave(QGraphicsItem):
         return Wave.BoundingRect
 
     def getRad(self):
-        return self.currentTick * math.pi / 180.0 
+        return self.currentTick * pi / 180.0 
 
-    def unitCircle(self,m_radius,cp):
-        ticksize = 3
+    def unitCircle(self,m_radius,cp,ticksize):
         qp = QPainterPath()
         qp.addEllipse(cp,m_radius,m_radius)
         points = [
@@ -70,10 +70,10 @@ class Wave(QGraphicsItem):
             ),
             #pi/4
             (
-                QPointF(m_radius*math.cos(math.pi/4)-ticksize,
-                        -m_radius*math.sin(math.pi/4)+ticksize),
-                QPointF(m_radius*math.cos(math.pi/4)+ticksize,
-                        -m_radius*math.sin(math.pi/4)-ticksize)
+                QPointF(m_radius*cos(pi/4)-ticksize,
+                        -m_radius*sin(pi/4)+ticksize),
+                QPointF(m_radius*cos(pi/4)+ticksize,
+                        -m_radius*sin(pi/4)-ticksize)
 
             ),
             (
@@ -82,10 +82,10 @@ class Wave(QGraphicsItem):
             ),
             # 3pi/4
             (
-                QPointF(m_radius*math.cos(3*math.pi/4)-ticksize,
-                        -m_radius*math.sin(math.pi/4)-ticksize),
-                QPointF(m_radius*math.cos(3*math.pi/4)+ticksize,
-                       -m_radius*math.sin(math.pi/4)+ticksize)
+                QPointF(m_radius*cos(3*pi/4)-ticksize,
+                        -m_radius*sin(pi/4)-ticksize),
+                QPointF(m_radius*cos(3*pi/4)+ticksize,
+                       -m_radius*sin(pi/4)+ticksize)
             ),
             # 180
             (
@@ -99,17 +99,17 @@ class Wave(QGraphicsItem):
                 QPointF(0,m_radius+ticksize)
             ),
             (
-                QPointF(m_radius*math.cos(5*math.pi/4)-ticksize,
-                        -m_radius*math.sin(5*math.pi/4)+ticksize),
-                QPointF(m_radius*math.cos(5*math.pi/4)+ticksize,
-                       -m_radius*math.sin(5*math.pi/4)-ticksize)
+                QPointF(m_radius*cos(5*pi/4)-ticksize,
+                        -m_radius*sin(5*pi/4)+ticksize),
+                QPointF(m_radius*cos(5*pi/4)+ticksize,
+                       -m_radius*sin(5*pi/4)-ticksize)
             ),
             # 7pi/4
             (
-                QPointF(m_radius*math.cos(7*math.pi/4)-ticksize,
-                       -m_radius*math.sin(7*math.pi/4)-ticksize),
-                QPointF(m_radius*math.cos(7*math.pi/4)+ticksize,
-                       -m_radius*math.sin(7*math.pi/4)+ticksize)
+                QPointF(m_radius*cos(7*pi/4)-ticksize,
+                       -m_radius*sin(7*pi/4)-ticksize),
+                QPointF(m_radius*cos(7*pi/4)+ticksize,
+                       -m_radius*sin(7*pi/4)+ticksize)
             )
         ]
 
@@ -131,9 +131,9 @@ class Wave(QGraphicsItem):
 
         painter.setPen(Qt.red)
         cp = QPointF(self.xres*self.currentTick,-self.yres*self.fn(rad))
-        painter.drawPath(self.unitCircle(radius,cp))
+        painter.drawPath(self.unitCircle(radius,cp,3))
         #drawCircle(painter,cp)
-        painter.drawLine(cp,cp+QPointF(radius*math.cos(rad),-radius*math.sin(rad)))
+        painter.drawLine(cp,cp+QPointF(radius*cos(rad),-radius*sin(rad)))
         painter.setBrush(Qt.blue)
-        painter.drawEllipse(cp+QPointF(radius*math.cos(rad),-radius*math.sin(rad)),c_size,c_size)
+        painter.drawEllipse(cp+QPointF(radius*cos(rad),-radius*sin(rad)),c_size,c_size)
     

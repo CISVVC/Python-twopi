@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-from math import sin,cos
 from PyQt5.QtCore import (
-        QPointF, Qt)
+        QPointF, Qt,QTimer)
 from PyQt5.QtGui import (
     QColor
     )
@@ -12,14 +11,16 @@ from PyQt5.QtWidgets import (
 #import animatedtiles_rc
 from axis import Axis
 from wave import Wave
+from unitcircle import UnitCircle
+from legend import Legend
 
 class Scene(QGraphicsScene):
 
     functions = [
-        {"wave":Wave(eval('lambda d: sin(d)'),QColor(0,0,255))},
-        {"wave":Wave(eval('lambda d: cos(d)'),QColor(255,128,0))},
-        {"wave":Wave(eval('lambda d: sin(4*d)*-2.5'),QColor(0,128,128))},
-        {"wave":Wave(eval('lambda d: cos(4*d)*0.5'),QColor(0,128,128))},
+        {"wave":Wave('lambda d: sin(d)',QColor(0,0,255))},
+        {"wave":Wave('lambda d: cos(d)',QColor(255,128,0))},
+        {"wave":Wave('lambda d: sin(4*d)*-2.5',QColor(0,128,128))},
+        {"wave":Wave('lambda d: cos(4*d)*0.5',QColor(0,128,128))},
     ]
 
     def addWave(self,wave,cp):
@@ -35,8 +36,17 @@ class Scene(QGraphicsScene):
         cp = QPointF(300,0)
         self.makeWaves(cp)
         self.axis = Axis(QColor(0,0,0))
+        self.unitcircle = UnitCircle(Qt.blue)
+        self.addItem(self.unitcircle)
+        self.unitcircle.setPos(QPointF(-300,-275))
+        self.legend = Legend(self.functions)
+        self.addItem(self.legend)
+        self.legend.setPos(QPointF(-200,-350))
         self.addItem(self.axis) 
         self.axis.setPos(self.axis.pos()-cp)
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.updateTick)
+        self.timer.start(100)
 
     def resizeEvent(self, event):
         super(Scene, self).resizeEvent(event)
@@ -44,4 +54,5 @@ class Scene(QGraphicsScene):
 
     def updateTick(self):
         [fn["wave"].nextStep(self.incStep) for fn in Scene.functions]
+        self.unitcircle.nextStep(self.incStep)
         self.update()
