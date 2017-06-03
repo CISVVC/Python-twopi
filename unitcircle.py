@@ -20,7 +20,7 @@ from PyQt5.QtWidgets import (
 
 class UnitCircle(QGraphicsItem):
 
-    BoundingRect = QRectF(0,0,100,100)
+    BoundingRect = QRectF(-50,-50,100,100)
 
     def __init__(self,color):
         super(UnitCircle,self).__init__()

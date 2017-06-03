@@ -3,10 +3,12 @@
 from PyQt5.QtWidgets import (
     QApplication
 )
+from PyQt5.QtGui import (
+        QIcon
+)
+import resources_qrc
 
-from view import View
-from scene import Scene
-
+from mainwindow import Window as MainWindow
 
 if __name__ == '__main__':
 
@@ -14,11 +16,10 @@ if __name__ == '__main__':
     import math
 
     app = QApplication(sys.argv)
+    app.setWindowIcon(QIcon('pi-symbol.png'))
 
-    scene = Scene()
-    view = View(scene,"Animated 2Pi")
-    view.show()
-
+    window = MainWindow()
+    window.show()
 
 
     sys.exit(app.exec_())

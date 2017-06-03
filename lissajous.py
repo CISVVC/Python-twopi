@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from math import sin,cos,pi,exp
+from math import sin,cos,pi
 
 from PyQt5.QtCore import (
         QPointF, 
@@ -18,43 +18,46 @@ from PyQt5.QtWidgets import (
     QGraphicsScene
 )
 
-class Wave(QGraphicsItem):
+class Curve(QGraphicsItem):
 
-    BoundingRect = QRectF(0,-100,720,100)
+    BoundingRect = QRectF(-100,-100,200,200)
 
-    def __init__(self,fn,color):
-        super(Wave,self).__init__()
+    def __init__(self,fn,color,periods):
+        super(Curve,self).__init__()
+        self.divisions = 361
         self.fnText = fn
-        self.fn = eval(fn)
+        self.fn = eval('lambda t: '+fn)
         self.color = color
-        self.xres = 2 
+        self.xres = 100 
         self.yres = 100
-        self.start = 0
-        self.currentTick = self.start
+        self.currentTick = 0
+        self.periods = periods 
         self.curve = self.getCurve()
         self.setFlag(QGraphicsItem.ItemIsMovable, True);
         self.setFlag(QGraphicsItem.ItemIsSelectable, True);
 
     def getCurve(self):
        qp = QPainterPath()
-       lastPoint = QPointF(0,-1*self.yres * self.fn(self.start))
-       for d in range(self.start,360):
+       r = self.fn(0)
+       lastPoint = QPointF(self.xres * r[0],-1*self.yres * r[1])
+       for d in range(self.periods*self.divisions):
            qp.moveTo(lastPoint)
-           nextPoint = QPointF(self.xres * d,-1*self.yres * self.fn(d*pi/180.0))
+           r = self.fn(d*pi/180.0)
+           nextPoint = QPointF(self.xres * r[0],-1*self.yres * r[1])
            qp.lineTo(nextPoint)
            lastPoint = nextPoint
 
        return qp 
 
     def nextStep(self,inc):
-        if self.currentTick  < 360:
+        if self.currentTick  < self.periods*self.divisions:
             self.currentTick +=inc
         else:
-            self.currentTick = self.start
+            self.currentTick = 0
 
 
     def boundingRect(self):
-        return Wave.BoundingRect
+        return Curve.BoundingRect
 
     def getRad(self):
         return self.currentTick * pi / 180.0 
@@ -124,14 +127,15 @@ class Wave(QGraphicsItem):
         return qp
 
     def paint(self,painter,option,widget):
-        radius = 15
-        c_size =5 
+        radius = 10
+        c_size = 5 
         rad = self.getRad()
         painter.setPen(self.color)
         painter.drawPath(self.curve)
-        #painter.drawRect(self.boundingRect())
+
         painter.setPen(Qt.red)
-        cp = QPointF(self.xres*self.currentTick,-self.yres*self.fn(rad))
+        r = self.fn(self.currentTick*pi/180.0)
+        cp = QPointF(self.xres * r[0],-1*self.yres * r[1])
         #painter.drawPath(self.unitCircle(radius,cp,3))
         painter.drawLine(cp,cp+QPointF(radius*cos(rad),-radius*sin(rad)))
         painter.drawLine(cp,cp+QPointF(-radius*cos(rad),radius*sin(rad)))
@@ -139,4 +143,6 @@ class Wave(QGraphicsItem):
         painter.drawEllipse(cp+QPointF(radius*cos(rad),-radius*sin(rad)),c_size,c_size)
         painter.setBrush(Qt.red)
         painter.drawEllipse(cp+QPointF(-radius*cos(rad),radius*sin(rad)),c_size,c_size)
+        painter.setPen(Qt.black)
+        painter.drawText(QPointF(self.boundingRect().center().x(),self.boundingRect().bottom()+30),self.fnText)
     

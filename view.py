@@ -2,10 +2,13 @@ from PyQt5.QtCore import (
     Qt
 )
 from PyQt5.QtGui import (
-    QPainter
+    QPainter,
+    QIcon
 )
 from PyQt5.QtWidgets import (
-    QGraphicsView
+    QGraphicsView,
+    QAction,
+    QMenuBar
 )
 
 class View(QGraphicsView):

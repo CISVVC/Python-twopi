@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>assets/images/exit24.png</file>
+        <file>assets/images/tile.png</file>
+    </qresource>
+</RCC>

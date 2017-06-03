@@ -53,7 +53,7 @@ class Legend(QGraphicsItem):
 
     def paint(self,painter,option,widget):
         #painter.setBrush(Qt.blue)
-        painter.drawRect(self.boundingRect());
+        #painter.drawRect(self.boundingRect());
         for item in self.m_items:
             painter.setPen(item.getItem()['wave'].color)
             painter.setBrush(item.getItem()['wave'].color)
