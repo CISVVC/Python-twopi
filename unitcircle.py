@@ -9,6 +9,7 @@ from PyQt5.QtCore import (
 
 from PyQt5.QtGui import (
     QBrush, 
+    QPen, 
     QPainter, 
     QPainterPath,
     QPixmap
@@ -112,10 +113,13 @@ class UnitCircle(QGraphicsItem):
     def paint(self,painter,option,widget):
         c_size =5 
         rad = self.getRad()
-        painter.setPen(self.color)
+        painter.setPen(QPen(self.color,0.3))
         painter.drawPath(self.m_circle)
         #drawCircle(painter,cp)
         painter.drawLine(self.m_cp,self.m_cp+QPointF(self.m_radius*math.cos(rad),-self.m_radius*math.sin(rad)))
         painter.setBrush(Qt.blue)
         painter.drawEllipse(self.m_cp+QPointF(self.m_radius*math.cos(rad),-self.m_radius*math.sin(rad)),c_size,c_size)
+        painter.drawLine(self.m_cp,self.m_cp+QPointF(-self.m_radius*math.cos(rad),self.m_radius*math.sin(rad)))
+        painter.setBrush(Qt.red)
+        painter.drawEllipse(self.m_cp+QPointF(-self.m_radius*math.cos(rad),self.m_radius*math.sin(rad)),c_size,c_size)
     

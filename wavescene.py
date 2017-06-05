@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 from PyQt5.QtCore import (
-        QPointF, Qt,QTimer)
+        QPointF, 
+        Qt,
+        pyqtSlot,
+        QTimer)
 from PyQt5.QtGui import (
     QColor
     )
@@ -58,3 +61,9 @@ class Scene(QGraphicsScene):
         [fn["wave"].nextStep(self.incStep) for fn in self.functions]
         self.unitcircle.nextStep(self.incStep)
         self.update()
+
+    @pyqtSlot(int)
+    def speedChange(self,stype):
+        newInterval = self.timer.interval() + stype*self.incStep
+        if newInterval > 0:
+            self.timer.setInterval(newInterval)

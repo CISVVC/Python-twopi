@@ -9,6 +9,8 @@ from PyQt5.QtCore import (
 )
 from PyQt5.QtGui import (
     QBrush, 
+    QFont,
+    QPen,
     QPainter, 
     QPainterPath,
     QPixmap
@@ -17,6 +19,8 @@ from PyQt5.QtWidgets import (
     QGraphicsItem, 
     QGraphicsScene
 )
+
+from angleitem import Item as Angle
 
 class Curve(QGraphicsItem):
 
@@ -33,6 +37,7 @@ class Curve(QGraphicsItem):
         self.currentTick = 0
         self.periods = periods 
         self.curve = self.getCurve()
+        self.angle = Angle(self)
         self.setFlag(QGraphicsItem.ItemIsMovable, True);
         self.setFlag(QGraphicsItem.ItemIsSelectable, True);
 
@@ -48,12 +53,6 @@ class Curve(QGraphicsItem):
            lastPoint = nextPoint
 
        return qp 
-
-    def nextStep(self,inc):
-        if self.currentTick  < self.periods*self.divisions:
-            self.currentTick +=inc
-        else:
-            self.currentTick = 0
 
 
     def boundingRect(self):
@@ -126,23 +125,26 @@ class Curve(QGraphicsItem):
 
         return qp
 
-    def paint(self,painter,option,widget):
-        radius = 10
-        c_size = 5 
-        rad = self.getRad()
-        painter.setPen(self.color)
-        painter.drawPath(self.curve)
+    def nextStep(self,inc):
+        if self.currentTick  < self.periods*self.divisions:
+            self.currentTick +=inc
+        else:
+            self.currentTick = 0
+        self.angle.currentTick = self.currentTick
 
+    def paint(self,painter,option,widget):
+        painter.setPen(QPen(self.color,0.25))
+        painter.drawPath(self.curve)
         painter.setPen(Qt.red)
         r = self.fn(self.currentTick*pi/180.0)
         cp = QPointF(self.xres * r[0],-1*self.yres * r[1])
-        #painter.drawPath(self.unitCircle(radius,cp,3))
-        painter.drawLine(cp,cp+QPointF(radius*cos(rad),-radius*sin(rad)))
-        painter.drawLine(cp,cp+QPointF(-radius*cos(rad),radius*sin(rad)))
-        painter.setBrush(Qt.blue)
-        painter.drawEllipse(cp+QPointF(radius*cos(rad),-radius*sin(rad)),c_size,c_size)
-        painter.setBrush(Qt.red)
-        painter.drawEllipse(cp+QPointF(-radius*cos(rad),radius*sin(rad)),c_size,c_size)
+        self.angle.setCenter(cp)
+        font = QFont() 
+        font.setPointSize(10)
+        painter.setFont(font)
         painter.setPen(Qt.black)
-        painter.drawText(QPointF(self.boundingRect().center().x(),self.boundingRect().bottom()+30),self.fnText)
+        painter.drawText(QPointF(self.boundingRect().center().x(),self.boundingRect().bottom()+15),self.fnText)
+
+    def __str__(self):
+        return 'Item:Lissajous >'+ ','.join([' :{}'.format(item) for item in self.childItems()])
     

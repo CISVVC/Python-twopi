@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 from PyQt5.QtCore import (
-        QPointF, Qt,QTimer)
+        QPointF, 
+        Qt,
+        pyqtSlot,
+        QTimer)
 from PyQt5.QtGui import (
     QColor
     )
@@ -17,18 +20,16 @@ from legend import Legend
 class Scene(QGraphicsScene):
 
 
-    def addWave(self,wave,cp):
+    def addWave(self,wave):
         self.addItem(wave)
-        #wave.setPos(wave.pos()-cp)
-        #wave.setPos(QPointF(-300,0))
 
     def makeWaves(self,cp):
-        [self.addWave(fn['wave'],cp) for fn in self.functions]
+        [self.addItem(fn['wave']) for fn in self.functions]
 
     def __init__(self):
         super(Scene,self).__init__(-350, -350, 900, 700)
         self.functions = [
-            {"wave":Curve('(cos(2*d)*cos(d),cos(2*d)*sin(d))',QColor(0,255,255),2)},
+            {"wave":Curve('(cos(2*d)*cos(d),cos(2*d)*sin(d))',QColor(0,255,255),4)},
             {"wave":Curve('(cos(3/2.0*d)*cos(d),cos(3/2.0*d)*sin(d))',QColor(128,0,255),2)},
             {"wave":Curve('(cos(7/8.0*d)*cos(d),cos(7/8.0*d)*sin(d))',QColor(0,0,255),8)},
             {"wave":Curve('(cos(3/4.0*d)*cos(d),cos(3/4.0*d)*sin(d))',QColor(255,0,0),4)},
@@ -42,13 +43,9 @@ class Scene(QGraphicsScene):
         self.unitcircle = UnitCircle(Qt.blue)
         self.unitcircle.setFlag(QGraphicsItem.ItemIsMovable, True);
         self.unitcircle.setFlag(QGraphicsItem.ItemIsSelectable, True);
-        self.addItem(self.unitcircle)
         self.unitcircle.setPos(QPointF(-300,-275))
         self.legend = Legend(self.functions)
-        #self.addItem(self.legend)
         self.legend.setPos(QPointF(-200,-350))
-        #self.addItem(self.axis) 
-        #self.axis.setPos(self.axis.pos()-cp)
         self.timer = QTimer()
         self.timer.timeout.connect(self.updateTick)
         self.timer.start(50)
@@ -61,3 +58,9 @@ class Scene(QGraphicsScene):
         [fn["wave"].nextStep(self.incStep) for fn in self.functions]
         self.unitcircle.nextStep(self.incStep)
         self.update()
+
+    @pyqtSlot(int)
+    def speedChange(self,stype):
+        newInterval = self.timer.interval() + stype*self.incStep
+        if newInterval > 0:
+            self.timer.setInterval(newInterval)

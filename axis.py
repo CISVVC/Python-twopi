@@ -4,8 +4,14 @@ import math
 from PyQt5.QtCore import (pyqtProperty, pyqtSignal, QEasingCurve, QObject,
         QParallelAnimationGroup, QPointF, QPropertyAnimation, qrand, QRectF,
         QState, QStateMachine, Qt, QTimer)
-from PyQt5.QtGui import (QBrush, QLinearGradient, QPainter, QPainterPath,
-        QPixmap)
+from PyQt5.QtGui import (
+    QBrush, 
+    QLinearGradient, 
+    QPainter, 
+    QPainterPath,
+    QPixmap,
+    QPen
+)
 from PyQt5.QtWidgets import (QApplication, QGraphicsItem, QGraphicsPixmapItem,
         QGraphicsRectItem, QGraphicsScene, QGraphicsView, QGraphicsWidget,
         QStyle)
@@ -32,5 +38,6 @@ class Axis(QGraphicsItem):
         return qp
 
     def paint(self,painter,option,widget):
+        painter.setPen(QPen(Qt.black,0.5))
         painter.drawPath(self.axes())
     

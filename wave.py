@@ -9,6 +9,7 @@ from PyQt5.QtCore import (
 )
 from PyQt5.QtGui import (
     QBrush, 
+    QPen,
     QPainter, 
     QPainterPath,
     QPixmap
@@ -18,6 +19,7 @@ from PyQt5.QtWidgets import (
     QGraphicsScene
 )
 
+from angleitem import Item as Angle
 class Wave(QGraphicsItem):
 
     BoundingRect = QRectF(0,-100,720,100)
@@ -34,6 +36,7 @@ class Wave(QGraphicsItem):
         self.curve = self.getCurve()
         self.setFlag(QGraphicsItem.ItemIsMovable, True);
         self.setFlag(QGraphicsItem.ItemIsSelectable, True);
+        self.angle = Angle(self)
 
     def getCurve(self):
        qp = QPainterPath()
@@ -46,11 +49,6 @@ class Wave(QGraphicsItem):
 
        return qp 
 
-    def nextStep(self,inc):
-        if self.currentTick  < 360:
-            self.currentTick +=inc
-        else:
-            self.currentTick = self.start
 
 
     def boundingRect(self):
@@ -123,20 +121,15 @@ class Wave(QGraphicsItem):
 
         return qp
 
+    def nextStep(self,inc):
+        if self.currentTick  < 360:
+            self.currentTick +=inc
+        else:
+            self.currentTick = self.start
+        self.angle.currentTick = self.currentTick
+
     def paint(self,painter,option,widget):
-        radius = 15
-        c_size =5 
-        rad = self.getRad()
-        painter.setPen(self.color)
+        painter.setPen(QPen(self.color,0.25))
         painter.drawPath(self.curve)
-        #painter.drawRect(self.boundingRect())
-        painter.setPen(Qt.red)
-        cp = QPointF(self.xres*self.currentTick,-self.yres*self.fn(rad))
-        #painter.drawPath(self.unitCircle(radius,cp,3))
-        painter.drawLine(cp,cp+QPointF(radius*cos(rad),-radius*sin(rad)))
-        painter.drawLine(cp,cp+QPointF(-radius*cos(rad),radius*sin(rad)))
-        painter.setBrush(Qt.blue)
-        painter.drawEllipse(cp+QPointF(radius*cos(rad),-radius*sin(rad)),c_size,c_size)
-        painter.setBrush(Qt.red)
-        painter.drawEllipse(cp+QPointF(-radius*cos(rad),radius*sin(rad)),c_size,c_size)
-    
+        self.angle.setCenter(QPointF( self.xres*self.currentTick,
+                                     -self.yres*self.fn(self.getRad())))

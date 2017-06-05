@@ -21,4 +21,4 @@ class View(QGraphicsView):
 
     def resizeEvent(self, event):
         super(View, self).resizeEvent(event)
-        self.fitInView(self.sceneRect(), Qt.KeepAspectRatio)
+        #self.fitInView(self.sceneRect(), Qt.KeepAspectRatio)
