@@ -97,7 +97,7 @@ class Window(QMainWindow):
 
     def sineWaveScene(self):
         from wavescene import Scene as WaveScene
-        WScene = importlib.import_module('.wavescene.Scene',package='scenes')
+        #WScene = importlib.import_module('.wavescene.Scene',package='scenes')
         scene = WaveScene()
         self.speedChange.connect(scene.speedChange)
         if not hasattr(self,'view'):
