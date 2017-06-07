@@ -115,7 +115,7 @@ class Item(QGraphicsItem):
         self.m_cp = cp 
 
     def paint(self,painter,option,widget):
-        painter.setPen(QPen(Qt.blue,0.5)) 
+        painter.setPen(QPen(Qt.blue,0.25)) 
         rad = self.getRad()
         painter.drawLine(self.m_cp,self.m_cp+QPointF(self.m_radius*cos(rad),-self.m_radius*sin(rad)))
         painter.drawLine(self.m_cp,self.m_cp+QPointF(self.m_radius/2*cos(rad+pi/2),-self.m_radius/2*sin(rad+pi/2)))

@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 from math import pow
+import importlib.util
+import sys
 
 from PyQt5.QtCore import (
     Qt,
@@ -16,6 +18,32 @@ from PyQt5.QtWidgets import (
     QMainWindow
 )
 
+
+def import_module(name, package=None):
+    """An approximate implementation of import."""
+    absolute_name = importlib.util.resolve_name(name, package)
+    try:
+        return sys.modules[absolute_name]
+    except KeyError:
+        pass
+
+    path = None
+    if '.' in absolute_name:
+        parent_name, _, child_name = absolute_name.rpartition('.')
+        parent_module = import_module(parent_name)
+        path = parent_module.spec.submodule_search_locations
+    for finder in sys.meta_path:
+        spec = finder.find_spec(absolute_name, path)
+        if spec is not None:
+            break
+    else:
+        raise ImportError(f'No module named {absolute_name!r}')
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    sys.modules[absolute_name] = module
+    if path is not None:
+        setattr(parent_module, child_name, module)
+    return module
 from view import View
 
 class Window(QMainWindow):
@@ -69,6 +97,7 @@ class Window(QMainWindow):
 
     def sineWaveScene(self):
         from wavescene import Scene as WaveScene
+        WScene = importlib.import_module('.wavescene.Scene',package='scenes')
         scene = WaveScene()
         self.speedChange.connect(scene.speedChange)
         if not hasattr(self,'view'):
@@ -91,6 +120,10 @@ class Window(QMainWindow):
         self.view.setScene(scene)
         [print('{}'.format(item)) for item in scene.items()]
         self.setWindowTitle("Lissajous Curves")
+
+    def wheelEvent(self,event):
+        self.scalefactor += event.angleDelta().y()/60
+        self.scaleView()
 
     def keyPressEvent(self,event):
         super(Window,self).keyPressEvent(event)
